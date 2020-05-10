@@ -79,4 +79,4 @@ group :production do
 end
 
 
-
+gem 'recaptcha', '>= 5.4.1',  require: "recaptcha/rails"
