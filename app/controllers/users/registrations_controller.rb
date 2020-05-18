@@ -85,7 +85,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create_address
     @progress = 5
     @address = Address.new(address_params)
-    unless @address.save!
+    unless @address.save
       redirect_to users_new_address_path, alert: @address.errors.full_messages
     end
   end
