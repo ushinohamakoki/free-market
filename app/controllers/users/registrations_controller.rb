@@ -41,7 +41,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
       render :new and return
     end
 
-    session["devise.user_object"] = @user  ## sessionに@userを入れる
+    session["devise.user_object"] = @user.attributes  ## sessionに@userを入れる
+    session["devise.user_object"][:password] = params[:user][:password]  ## 暗号化前のパスワードをsessionに入れる
+    
     respond_with resource, location: after_sign_up_path_for(resource)  ## リダイレクト
     ## ↓resource（@user）にsns_credentialを紐付けている
     resource.build_sns_credential(session["devise.sns_auth"]["sns_credential"]) if session["devise.sns_auth"]
@@ -99,6 +101,17 @@ class Users::RegistrationsController < Devise::RegistrationsController
     @address = Address.new(address_params)
     if @address.invalid? ## バリデーションに引っかかる（save不可な）時
       redirect_to users_new_address_path, alert: @address.errors.full_messages
+    end
+
+    @progress = 5
+    ## ↓@user = User.newをしているイメージ
+    @user = build_resource(session["devise.user_object"])
+    @user.build_sns_credential(session["devise.sns_auth"]["sns_credential"]) if session["devise.sns_auth"] ## sessionがあるとき＝sns認証でここまできたとき
+    @user.address = @address
+    if @user.save
+      sign_up(resource_name, resource)  ## ログインさせる
+    else
+      redirect_to root_path, alert: @user.errors.full_messages
     end
   end
 
