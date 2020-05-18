@@ -32,6 +32,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
 
     build_resource(sign_up_params)  ## @user = User.new(user_params) をしているイメージ
+    session["devise.user_object"] = @user  ## sessionに@userを入れる
+    respond_with resource, location: after_sign_up_path_for(resource)  ## リダイレクト
     ## ↓resource（@user）にsns_credentialを紐付けている
     resource.build_sns_credential(session["devise.sns_auth"]["sns_credential"]) if session["devise.sns_auth"]
 
