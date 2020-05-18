@@ -32,6 +32,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
 
     build_resource(sign_up_params)  ## @user = User.new(user_params) をしているイメージ
+
+    unless resource.valid? ## 登録に失敗したとき
+      ## 進捗バー用の@progressとflashメッセージをセットして戻る
+      @progress = 1
+      @sns_auth = true if session["devise.sns_auth"]
+      flash.now[:alert] = resource.errors.full_messages
+      render :new and return
+    end
+
     session["devise.user_object"] = @user  ## sessionに@userを入れる
     respond_with resource, location: after_sign_up_path_for(resource)  ## リダイレクト
     ## ↓resource（@user）にsns_credentialを紐付けている
@@ -88,7 +97,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create_address
     @progress = 5
     @address = Address.new(address_params)
-    unless @address.save
+    if @address.invalid? ## バリデーションに引っかかる（save不可な）時
       redirect_to users_new_address_path, alert: @address.errors.full_messages
     end
   end
@@ -134,7 +143,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
         :city,
         :house_number,
         :building_name,
-        ).merge(user_id: current_user.id)
     end
 
 end
