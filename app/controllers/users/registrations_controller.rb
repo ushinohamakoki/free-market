@@ -29,7 +29,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       params[:user][:password] = password
       params[:user][:password_confirmation] = password
     end
-    
+
     build_resource(sign_up_params)  ## @user = User.new(user_params) をしているイメージ
     ## ↓resource（@user）にsns_credentialを紐付けている
     resource.build_sns_credential(session["devise.sns_auth"]["sns_credential"]) if session["devise.sns_auth"]
@@ -111,7 +111,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   private
   
     def after_sign_up_path_for(resource)
-      user_path(resource)
+      users_confirm_phone_path
     end
 
     def check_recaptcha
