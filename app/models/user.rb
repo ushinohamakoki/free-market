@@ -11,7 +11,9 @@ class User < ApplicationRecord
    validates :password, format: { with: /\A(?=.*?[a-z])(?=.*?\d)[\w-]{8,128}+\z/i }
    has_one :sns_credential, dependent: :destroy
    has_one :address, dependent: :destroy
-
+   has_many :selling_items, class_name: "Item", foreign_key: "seller_id"
+   has_many :bought_items, class_name: "Item", foreign_key: "buyer_id"
+   
    def self.from_omniauth(auth_data)
     email = auth_data.info.email
     nickname = auth_data.info.name
