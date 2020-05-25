@@ -81,11 +81,11 @@
           = f.select :delivery_method, Item.delivery_methods.keys, {include_blank: "---"}
           %br
           .error-field{data:{column_name: "delivery_method"}}
-        = f.label :prefecture, "発送元の地域"
+        = f.label :prefecture_id, "発送元の地域"
         %span.required-true
           必須
         %br
-        = f.collection_select :prefecture, Prefecture.all, :id , :name, {include_blank: "---"}, required: true, placeholder: "発送元の地域"
+        = f.collection_select :prefecture_id, Prefecture.all, :id , :name, {include_blank: "---"}, required: true, placeholder: "発送元の地域"
         .error-field{data:{column_name: "delivery_agency"}}
         %br
         = f.label :delivery_days, "発送までの日数"
