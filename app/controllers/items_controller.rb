@@ -1,5 +1,6 @@
 class ItemsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index]
+  before_action :set_item, only: [:edit, :update, :destroy]
 
 
 
@@ -19,12 +20,10 @@ class ItemsController < ApplicationController
 
 
   def edit
-    @item = Item.find(params[:id])
     render layout: 'no_menu' # レイアウトファイル指定
   end
 
   def update
-    @item = Item.find(params[:id])
     if @item.update(item_params)
       redirect_to root_path, notice: "商品の編集が完了しました。"
     else
@@ -33,7 +32,6 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    @item = Item.find(params[:id])
     if @item.destroy
       redirect_to root_path, notice: "商品の削除が完了しました。"
     else
@@ -61,4 +59,10 @@ class ItemsController < ApplicationController
       ).merge(seller_id: current_user.id)
   end
 
+
+  def set_item
+    @item = Item.find(params[:id])
+  end
+
+  
 end
