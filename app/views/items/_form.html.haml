@@ -24,7 +24,7 @@
             #select-image-button__text
               クリックしてファイルをアップロード
     #image-file-fields
-      = f.fields_for :image do |image|
+      = f.fields_for :images do |image|
         = image.file_field :src, accept: "image/*"
     .error-field{data:{column_name: "item_images"}}
   .block.horizontal-padding-5
