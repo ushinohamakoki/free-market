@@ -16,8 +16,7 @@ class ItemsController < ApplicationController
     if @item.save
       redirect_to root_path, notice: "出品に成功しました"
     else
-      render layout: 'no_menu', template: 'items/new' # レイアウトファイル指定
-    end
+      redirect_to new_item_path, alert: @item.errors.full_messages    end
   end
 
 
@@ -29,8 +28,7 @@ class ItemsController < ApplicationController
     if @item.update(item_params)
       redirect_to root_path, notice: "商品の編集が完了しました。"
     else
-      render layout: 'no_menu', action: :edit
-    end
+      redirect_to edit_item_path(@item), alert: @item.errors.full_messages    end
   end
 
   def destroy
@@ -58,6 +56,7 @@ class ItemsController < ApplicationController
       :delivery_days,
       :prefecture_id,
       :category_id
+      image_attributes: [:src, :id, :_destroy]
       ).merge(seller_id: current_user.id)
   end
 
