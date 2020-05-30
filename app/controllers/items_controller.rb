@@ -16,7 +16,8 @@ class ItemsController < ApplicationController
     if @item.save
       redirect_to root_path, notice: "出品に成功しました"
     else
-      redirect_to new_item_path, alert: @item.errors.full_messages    end
+      redirect_to new_item_path, alert: @item.errors.full_messages
+    end
   end
 
 
@@ -29,7 +30,8 @@ class ItemsController < ApplicationController
     if @item.update(item_params)
       redirect_to root_path, notice: "商品の編集が完了しました。"
     else
-      redirect_to edit_item_path(@item), alert: @item.errors.full_messages    end
+      redirect_to edit_item_path(@item), alert: @item.errors.full_messages
+    end
   end
 
   def destroy
