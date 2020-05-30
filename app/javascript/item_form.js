@@ -9,6 +9,14 @@ document.addEventListener('turbolinks:load', function () {
   $("#image-file-fields").on("change", `input[type="file"]`, function (a) {
     console.table(a.target.files);
     console.log("画像が選択されました")
+
+    const file = a.target.files[0];
+    const blob_url = window.URL.createObjectURL(file);
+    console.log(blob_url);
+
+    const preview_html = `<img src="${blob_url}" width="20%">`;
+    $("#select-image-button").before(preview_html);
   });
+
 
 });
