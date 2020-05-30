@@ -1,9 +1,13 @@
 document.addEventListener('turbolinks:load', function () {
 
-  if (!$('#item_form')[0]) return false; //商品出品・編集ページではないなら以降実行しない。
+  if (!$('#item_form')[0]) return false;
   $("#select-image-button").on("click", function () {
-    const file_field = $("#item_images_attributes_0_src"); // 新規画像投稿用のfile_fieldを取得する。
-    file_field.trigger("click"); // file_fieldをクリックさせる。
+    const file_field = $("#item_images_attributes_0_src");
+    file_field.trigger("click"); 
+  });
+
+  $("#image-file-fields").on("change", `input[type="file"]`, function () {
+    console.log("画像が選択されました")
   });
 
 });
