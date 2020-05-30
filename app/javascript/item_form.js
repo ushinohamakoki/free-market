@@ -13,7 +13,7 @@ document.addEventListener('turbolinks:load', function () {
 
 
   $("#select-image-button").on("click", function () {
-    const file_field = $("#item_images_attributes_0_src");
+    const file_field = $(".new-item-image:last");
     file_field.trigger("click"); 
   });
 
@@ -31,7 +31,7 @@ document.addEventListener('turbolinks:load', function () {
     index += 1;
     const file_field_html = newFileField(index);
     $("#image-file-fields").append(file_field_html);
-    
+
   });
 
 
