@@ -6,7 +6,8 @@ document.addEventListener('turbolinks:load', function () {
     file_field.trigger("click"); 
   });
 
-  $("#image-file-fields").on("change", `input[type="file"]`, function () {
+  $("#image-file-fields").on("change", `input[type="file"]`, function (a) {
+    console.table(a.target.files);
     console.log("画像が選択されました")
   });
 
