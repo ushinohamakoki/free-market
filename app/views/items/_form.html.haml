@@ -13,9 +13,9 @@
         #selected-item-images
           -# 商品編集の際はプレビューを表示
           - @item.images.each_with_index do |image, i|
-          - if image.persisted?
-            .item-image{data: {index: i}}
-              = image_tag image.src.url, class: "item-image__image"
+            - if image.persisted?
+              .item-image{data: {index: i}}
+                = image_tag image.src.url, class: "item-image__image"
               .item-image__buttons
                 .item-image__buttons--edit
                   編集
