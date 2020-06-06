@@ -9,6 +9,13 @@ class Api::CategoriesController < ApplicationController
     puts "-----------------"
 
 
+    category = Category.find(params[:category_id])
+    @categories = category.children
+
+    puts "-----------------"
+    puts "子孫カテゴリ"
+    puts @categories.pluck(:name)
+    puts "-----------------"
 
   end
 
