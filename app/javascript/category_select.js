@@ -32,12 +32,17 @@ document.addEventListener('turbolinks:load', function () {
     })
 
     .done(function (categories) {
+
+      if (categories.length == 0) return false;
+
       console.log("success")
       console.table(categories);
 
       const html = buildCategoryForm(categories);
       console.log(html);
-      
+
+      $(".select-category:last").after(html);
+
     })
     .fail(function () {
       alert('error');
