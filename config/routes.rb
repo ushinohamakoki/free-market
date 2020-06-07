@@ -26,4 +26,11 @@ Rails.application.routes.draw do
   resources :categories, only: [:index, :show]
   resources :cards, only: [:new, :show]
 
+
+
+  namespace :api do
+    resources :categories, only: :index, defaults: { format: 'json' }
+  end
+
+
 end
