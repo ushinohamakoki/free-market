@@ -2,7 +2,7 @@ document.addEventListener('turbolinks:load', function () {
   if (!$('.select-category')[0]) return false;
 
   function buildCategoryForm(categories) {
-    let options = "";
+    const options = "";
     categories.forEach(function (category) {
       options += `
                   <option value="${category.id}">${category.name}</option>
@@ -20,7 +20,7 @@ document.addEventListener('turbolinks:load', function () {
   $(".input-field-main").on("change", ".select-category", function () {
     const category_id = $(this).val();
     console.log("選択されたカテゴリのID:", category_id);
-    var changed_form = $(this);
+    const changed_form = $(this);
     $.ajax({
       url: "/api/categories",
       type: "GET",
@@ -36,15 +36,10 @@ document.addEventListener('turbolinks:load', function () {
       console.log(html);
       $(".select-category:last").after(html);
     })
-    
+
     .fail(function () {
       alert('error');
     })
-
-
-
-
-
 
   });
 });
