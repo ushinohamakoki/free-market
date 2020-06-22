@@ -1,5 +1,9 @@
 class CardsController < ApplicationController
-  before_action :redirect_registered_user, except: [:index]
+  before_action :redirect_registered_user, except: [:index, :destroy]
+
+  def index
+    @card = Card.get_card(current_user.card.customer_token) if current_user.card
+  end
 
   def new
     @card = Card.new
@@ -15,6 +19,17 @@ class CardsController < ApplicationController
       redirect_to cards_path, notice: "カードの登録が完了しました。"
     else
       redirect_to new_card_path, alert: "カードの登録に失敗しました。"
+    end
+
+  end
+
+  def destroy
+    card = current_user.card
+
+    if card.destroy
+      redirect_to cards_path, notice: "カードの削除が完了しました。"
+    else
+      redirect_to cards_path, notice: "カードの削除に失敗しました。"
     end
 
   end
