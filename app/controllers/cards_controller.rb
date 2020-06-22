@@ -1,13 +1,28 @@
 class CardsController < ApplicationController
+  before_action :redirect_registered_user, except: [:index]
 
   def new
     @card = Card.new
   end
 
-
-
   def create
-    redirect_to cards_path, alert: "カードの登録が完了しました。トークン：#{params[:payjp_token]}"
+    Payjp.api_key = Rails.application.credentials.payjp[:secret_key]
+
+    customer = Payjp::Customer.create(card: params[:payjp_token]) ## 顧客の作成
+    card = current_user.build_card(card_token: params[:card_token], customer_token: customer.id)
+    if card.save
+
+      redirect_to cards_path, notice: "カードの登録が完了しました。"
+    else
+      redirect_to new_card_path, alert: "カードの登録に失敗しました。"
+    end
+
+  end
+
+  private
+
+  def redirect_registered_user
+    redirect_to cards_path, alert: "既にカードを登録済みです。" if current_user.card
   end
 
 end
