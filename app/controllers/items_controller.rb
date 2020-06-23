@@ -1,7 +1,9 @@
 class ItemsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
-  before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_item, only: [:show, :edit, :update, :destroy, :purchase_confirmation, :purchase]
   before_action :user_is_not_seller, only: [:edit, :update, :destroy]
+  before_action :sold_item, only: [:edit, :update, :destroy, :purchase_confirmation, :purchase]
+  before_action :user_is_seller, only: [:purchase_confirmation, :purchase]
 
   def show
   end
@@ -25,7 +27,7 @@ class ItemsController < ApplicationController
   def new
     @item = Item.new
     @item.images.build
-    render layout: 'no_menu' # レイアウトファイルを指定
+    render layout: 'no_menu' 
   end
 
   def create
@@ -40,7 +42,7 @@ class ItemsController < ApplicationController
 
   def edit
     @item.images.build
-    render layout: 'no_menu' # レイアウトファイル指定
+    render layout: 'no_menu' 
   end
 
   def update
@@ -60,7 +62,30 @@ class ItemsController < ApplicationController
   end
 
   def purchase_confirmation
-    render layout: 'no_menu' # レイアウトファイル指定
+    @card = Card.get_card(current_user.card.customer_token) if current_user.card
+    render layout: 'no_menu'
+  end
+
+  def purchase
+    redirect_to cards_path, alert: "クレジットカードを登録してください" and return unless current_user.card.present?
+
+    Payjp.api_key = Rails.application.credentials.payjp[:secret_key]
+    customer_token = current_user.card.customer_token
+    Payjp::Charge.create(
+      amount: @item.price,
+      customer: customer_token,
+      currency: 'jpy'
+    )
+    @item.update(deal: "売り切れ")
+    redirect_to item_path(@item), notice: "商品を購入しました"
+  end
+
+  def sold_item
+    redirect_to root_path, alert: "売り切れです" if @item.deal != "販売中"
+  end
+
+  def user_is_seller
+    redirect_to root_path, alert: "自分で出品した商品は購入できません" if @item.seller_id == current_user.id
   end
 
 
