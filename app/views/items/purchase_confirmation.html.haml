@@ -35,7 +35,7 @@
     %br
     #{current_user.last_name} #{current_user.first_name}
   .block__menu-right
-    = link_to "" do
+    = link_to cards_path, data: {turbolinks: false} do
       変更する >
 .block__menu-left
   支払い方法
