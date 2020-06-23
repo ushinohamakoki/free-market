@@ -17,7 +17,7 @@ document.addEventListener('turbolinks:load', function () {
         alert("カードを登録しました");
 
         $("#card_token").append(
-          `<input type="hidden" name="payjp_token" value=${response.id}>
+          `<input type="hidden" name="payjp_token" value=${response.id}>`
         );
         $('#card_form')[0].submit();
         $("#card_number_form").removeAttr("name");
