@@ -1,6 +1,6 @@
 class ItemsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show]
-  before_action :set_item, only: [:show, :edit, :update, :destroy, :purchase_confirmation]
+  before_action :set_item, only: [:show, :edit, :update, :destroy, :purchase_confirmation, :purchase]
   before_action :user_is_not_seller, only: [:edit, :update, :destroy]
 
   def show
@@ -25,7 +25,7 @@ class ItemsController < ApplicationController
   def new
     @item = Item.new
     @item.images.build
-    render layout: 'no_menu' # レイアウトファイルを指定
+    render layout: 'no_menu' 
   end
 
   def create
@@ -40,7 +40,7 @@ class ItemsController < ApplicationController
 
   def edit
     @item.images.build
-    render layout: 'no_menu' # レイアウトファイル指定
+    render layout: 'no_menu' 
   end
 
   def update
@@ -61,10 +61,18 @@ class ItemsController < ApplicationController
 
   def purchase_confirmation
     @card = Card.get_card(current_user.card.customer_token) if current_user.card
-    render layout: 'no_menu' # レイアウトファイル指定
+    render layout: 'no_menu'
   end
 
   def purchase
+    Payjp.api_key = Rails.application.credentials.payjp[:secret_key]
+    customer_token = current_user.card.customer_token
+    Payjp::Charge.create(
+      amount: @item.price,
+      customer: customer_token,
+      currency: 'jpy'
+    )
+    redirect_to item_path(@item), notice: "商品を購入しました"
   end
 
 

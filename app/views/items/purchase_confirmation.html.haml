@@ -24,9 +24,9 @@
       #amount__right
         // -----支払金額-----
         ¥#{@item.price}
-      = link_to purchase_item_path(@item), method: :post do
-        .button{class: "#{'back-red' if @card}" }
-          購入する
+    = link_to purchase_item_path(@item), method: :post do
+      .button{class: "#{'back-red' if @card}" }
+        購入する
 
 .block.horizontal-padding-25
   .block__menu-left
