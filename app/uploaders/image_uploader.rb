@@ -9,7 +9,7 @@ class ImageUploader < CarrierWave::Uploader::Base
     ## 本番環境の時
     storage :fog
   else
-    ## 開発環境の時
+    # 開発環境の時
     storage :file
   end
 
