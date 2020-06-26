@@ -16,11 +16,11 @@
             - if image.persisted?
               .item-image{data: {index: i}}
                 = image_tag image.src.url, class: "item-image__image"
-              .item-image__buttons
-                .item-image__buttons--edit
-                  編集
-                .item-image__buttons--delete
-                  削除
+                .item-image__buttons
+                  .item-image__buttons--edit
+                    編集
+                  .item-image__buttons--delete
+                    削除
           #select-image-button
             #select-image-button__text
               クリックしてファイルをアップロード
